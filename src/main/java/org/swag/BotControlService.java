@@ -19,22 +19,18 @@ public class BotControlService {
 	public @ResponseBody String startBot(){
 		bot.setServer("62.108.44.217");
 		bot.setCredentals("yolo", "XbMXWRud");
-		bot.start();
-		return "Bot started!";
+		return bot.start();
 	}
 	
 	@RequestMapping(value = "/setMessage", method = RequestMethod.GET)
 	public @ResponseBody String setMessage(@RequestParam("message") String message){
 		bot.setMessage(message);
-		bot.stop();
-		bot.start();
 		return "New message set!";
 	}
 	
 	@RequestMapping(value = "/stop", method = RequestMethod.GET)
 	public @ResponseBody String stopBot(){
-		bot.stop();
-		return "Bot stopped!";
+		return bot.stop();
 	}
 
 }

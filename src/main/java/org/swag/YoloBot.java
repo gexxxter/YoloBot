@@ -26,6 +26,7 @@ public class YoloBot implements TS3Listener {
 	private String message = "Derb Derb SlaxXx rockt";
 	public static String nickName = "yoloBot";
 	public static int LOWEST_SERVER_GROUP = 8;
+	private boolean isConnected = false;
 
 	private TS3Api api;
 	private TS3Config config;
@@ -35,7 +36,7 @@ public class YoloBot implements TS3Listener {
 		config = new TS3Config();
 		config.setDebugLevel(Level.ALL);
 		config.setFloodRate(FloodRate.DEFAULT);
-		
+
 	}
 
 	public void setServer(String server) {
@@ -51,7 +52,10 @@ public class YoloBot implements TS3Listener {
 		// TODO Auto-generated method stub
 	}
 
-	public void start() {
+	public String start() {
+		if (isConnected) {
+			return "Bot already started.";
+		}
 		query = new TS3Query(config);
 		query.connect();
 		api = query.getApi();
@@ -60,16 +64,22 @@ public class YoloBot implements TS3Listener {
 		api.setNickname(nickName);
 		api.sendChannelMessage(nickName + " is online!");
 		api.registerAllEvents();
-		api.moveClient(1);
 		api.addTS3Listeners(this);
+		isConnected = true;
+		return "Bot started";
 	}
 
-	public void stop() {
+	public String stop() {
+		if (!isConnected) {
+			return "Bot already stopped";
+		}
 		api.sendChannelMessage("YoloBot logging off...");
 		api.unregisterAllEvents();
 		api.logout();
 		query.exit();
-		api=null;
+		api = null;
+		isConnected = false;
+		return "Bot stopped.";
 	}
 
 	@Override
@@ -140,6 +150,9 @@ public class YoloBot implements TS3Listener {
 
 	public void setMessage(String message) {
 		this.message = message;
+		if (isConnected) {
+			api.sendChannelMessage("New Message: " + message);
+		}
 	}
 
 }
