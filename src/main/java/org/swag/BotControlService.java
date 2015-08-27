@@ -17,8 +17,6 @@ public class BotControlService {
 	
 	@RequestMapping(value = "/start", method = RequestMethod.GET)
 	public @ResponseBody String startBot(){
-		bot.setServer("62.108.44.217");
-		bot.setCredentals("yolo", "XbMXWRud");
 		return bot.start();
 	}
 	

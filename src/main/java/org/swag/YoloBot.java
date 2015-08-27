@@ -23,10 +23,11 @@ import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 
 @Named
 public class YoloBot implements TS3Listener {
-	private String message = "Derb Derb SlaxXx rockt";
+	private String message = "Testmessage";
 	public static String nickName = "yoloBot";
 	public static int LOWEST_SERVER_GROUP = 8;
 	private boolean isConnected = false;
+	private static int serverId;
 
 	private TS3Api api;
 	private TS3Config config;
@@ -36,6 +37,10 @@ public class YoloBot implements TS3Listener {
 		config = new TS3Config();
 		config.setDebugLevel(Level.ALL);
 		config.setFloodRate(FloodRate.DEFAULT);
+		
+		this.setCredentals(YoloBotApplication.username, YoloBotApplication.password);
+		this.setServer(YoloBotApplication.server);
+		serverId = YoloBotApplication.serverId;
 
 	}
 
@@ -59,7 +64,7 @@ public class YoloBot implements TS3Listener {
 		query = new TS3Query(config);
 		query.connect();
 		api = query.getApi();
-		api.selectVirtualServerById(1);
+		api.selectVirtualServerById(serverId);
 
 		api.setNickname(nickName);
 		api.sendChannelMessage(nickName + " is online!");
